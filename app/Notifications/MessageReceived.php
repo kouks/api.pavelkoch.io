@@ -2,23 +2,26 @@
 
 namespace App\Notifications;
 
+use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class MessageReceived extends Notification
 {
     use Queueable;
+
+    protected $message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Message $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -29,33 +32,25 @@ class MessageReceived extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['slack'];
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Get the Slack representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return SlackMessage
      */
-    public function toMail($notifiable)
+    public function toSlack($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
+        return (new SlackMessage)
+            ->from('Portfolio', ':alien:')
+            ->success()
+            ->content('You have received a message!')
+            ->attachment(function ($attachment) {
+                $attachment
+                    ->title($this->message->email)
+                    ->content($this->message->message);
+            });
     }
 }
