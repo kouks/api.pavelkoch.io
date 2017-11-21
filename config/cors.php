@@ -13,7 +13,7 @@ return [
     */
 
     'supportsCredentials' => false,
-    'allowedOrigins' => ['*'],
+    'allowedOrigins' => ['https://pavelkoch.io'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
