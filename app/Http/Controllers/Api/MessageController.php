@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\MessageReceived;
 
 class MessageController extends Controller
 {
@@ -41,6 +44,8 @@ class MessageController extends Controller
         ]);
 
         $message = Message::create($request->all());
+
+        User::find(1)->notify(new MessageReceived($message));
 
         return response()
             ->json($message, 201);
