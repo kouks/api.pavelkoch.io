@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\SlackMessage;
 
 class MessageReceived extends Notification
