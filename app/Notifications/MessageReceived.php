@@ -11,6 +11,11 @@ class MessageReceived extends Notification
 {
     use Queueable;
 
+    /**
+     * Create a new notification instance.
+     *
+     * @var \App\Models\Message
+     */
     protected $message;
 
     /**
@@ -45,7 +50,7 @@ class MessageReceived extends Notification
         return (new SlackMessage)
             ->from('Portfolio', ':alien:')
             ->success()
-            ->content('You have received a message!')
+            ->content('New message from pavelkoch.io')
             ->attachment(function ($attachment) {
                 $attachment
                     ->title($this->message->email)
